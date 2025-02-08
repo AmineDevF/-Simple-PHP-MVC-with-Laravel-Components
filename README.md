@@ -184,5 +184,27 @@ $response = $router->dispatch($request);
 $response->send();
 ```
 
+## Gestion des Routes et Permisssions
+Pour gérer des permissions, vous pouvez implémenter une classe Middleware comme suit :
+
+```php
+<?php
+namespace App\Middleware;
+
+class AuthMiddleware
+{
+    public function handle($request, $next)
+    {
+        if (!isset($_SESSION['user'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        return $next($request);
+    }
+}
+```
+Pour appliquer ce middleware, ajoutez cette gestion dans `web.php`.
+
 ## Conclusion
 Avec cette base, vos apprenants peuvent étendre leur projet en ajoutant des routes, contrôleurs, modèles et vues dynamiques en PHP. Si vous avez besoin d'autres fonctionnalités, faites-le-moi savoir !
