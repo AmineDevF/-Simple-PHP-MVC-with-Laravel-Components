@@ -179,16 +179,23 @@ Voici un exemple de modèle PHP `home.php` :
 
 ```php
 <!DOCTYPE html>
-<html lang="fr">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page d'accueil</title>
+    <title>Simple MVC App</title>
 </head>
 <body>
-    <h1><?php echo htmlspecialchars($data['message']); ?></h1>
+    <h1>Post List</h1>
+    <ul>
+        <?php foreach ($posts as $post): ?>
+            <li><?php echo $post->name; ?> - <?php echo $post->email; ?></li>
+        <?php endforeach; ?>
+    </ul>
+    <form method="POST" action="/store">
+        <button type="submit">Create Post</button>
+    </form>
 </body>
 </html>
+
 ```
 
 ## Exemple de Route
