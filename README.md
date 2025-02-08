@@ -5,6 +5,7 @@ Assurez-vous d'avoir installé les éléments suivants :
 
 - [Composer](https://getcomposer.org/download/)
 - [PHP 8.x](https://www.php.net/downloads)
+- [Packagist](https://packagist.org/)
 - Serveur local comme Laragon, XAMPP ou WAMP
 
 ---
@@ -21,7 +22,11 @@ cd php-mvc-tutorial
 ### 2. Installer les Dépendances
 
 ```bash
-composer install
+
+composer require illuminate/routing illuminate/events illuminate/database illuminate/http vlucas/phpdotenv
+composer dump-autoload
+
+
 ```
 
 ### 3. Configuration de l'Environnement
@@ -65,7 +70,7 @@ Accédez à [http://localhost:8000](http://localhost:8000).
 |   |-- Controllers/
 |       |-- HomeController.php
 |   |-- Models/
-|       |-- ExampleModel.php
+|       |-- User.php
 |-- public/
 |   |-- .htaccess
 |   |-- index.php
@@ -92,19 +97,27 @@ Voici un exemple de `HomeController.php` :
 <?php
 namespace App\Controllers;
 
-use App\Models\ExampleModel;
+use App\Models\User;
+use Illuminate\Routing\Controller;
 
-class HomeController
+class HomeController 
 {
     public function index()
     {
-        $model = new ExampleModel();
-        $data = $model->getData();
+        $posts = User::all();
+        return view('home', ['posts' => $posts]);
+    }
 
-        // Inclusion de la vue
-        return view('home', ['data' => $data]);
+    public function store()
+    {
+        User::create([
+            'name' => 'Sample Post',
+            'email' => 'amine.dev@gmail.com'
+        ]);
+        echo "Post created successfully!";
     }
 }
+
 ```
 
 ## Fonction Utilitaire `view()`
@@ -148,16 +161,17 @@ function view($view, $data = [])
 Voici un exemple de `ExampleModel.php` :
 
 ```php
-<?php
+<?php 
 namespace App\Models;
 
-class ExampleModel
+use Illuminate\Database\Eloquent\Model;
+
+class User extends Model
 {
-    public function getData()
-    {
-        return ["message" => "Bienvenue dans notre modèle simple !"];
-    }
+    protected $fillable = ['name', 'email'];
+    public $timestamps = false;
 }
+
 ```
 
 ## Exemple de Vue
