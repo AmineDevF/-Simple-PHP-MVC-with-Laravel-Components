@@ -64,6 +64,8 @@ Accédez à [http://localhost:8000](http://localhost:8000).
 |-- app/
 |   |-- Controllers/
 |       |-- HomeController.php
+|   |-- Models/
+|       |-- ExampleModel.php
 |-- public/
 |   |-- .htaccess
 |   |-- index.php
@@ -76,6 +78,7 @@ Accédez à [http://localhost:8000](http://localhost:8000).
 ```
 
 - `app/Controllers/`: Contient les contrôleurs
+- `app/Models/`: Contient les modèles
 - `public/`: Fichiers publics et point d'entrée du projet
 - `routes/web.php`: Déclaration des routes
 - `views/`: Modèles Twig pour l'affichage
@@ -90,12 +93,31 @@ Voici un exemple de `HomeController.php` :
 namespace App\Controllers;
 
 use Illuminate\Routing\Controller;
+use App\Models\ExampleModel;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        echo "Bienvenue dans notre application MVC simple !";
+        $model = new ExampleModel();
+        $data = $model->getData();
+        echo "Données : " . json_encode($data);
+    }
+}
+```
+
+## Exemple de Modèle
+Voici un exemple de `ExampleModel.php` :
+
+```php
+<?php
+namespace App\Models;
+
+class ExampleModel
+{
+    public function getData()
+    {
+        return ["message" => "Bienvenue dans notre modèle simple !"];
     }
 }
 ```
@@ -131,4 +153,4 @@ $response->send();
 ```
 
 ## Conclusion
-Avec cette base, vos apprenants peuvent étendre leur projet en ajoutant des routes, contrôleurs et vues dynamiques. Si vous avez besoin d'autres fonctionnalités, faites-le-moi savoir !
+Avec cette base, vos apprenants peuvent étendre leur projet en ajoutant des routes, contrôleurs, modèles et vues dynamiques. Si vous avez besoin d'autres fonctionnalités, faites-le-moi savoir !
