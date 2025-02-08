@@ -111,8 +111,31 @@ class HomeController
 Ajoutez cette fonction dans `bootstrap.php` :
 
 ```php
-<?php
-require_once __DIR__ . '/vendor/autoload.php';
+<?php 
+use Dotenv\Dotenv;
+
+require __DIR__ . '/vendor/autoload.php';
+
+use Illuminate\Database\Capsule\Manager as Capsule;
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+$capsule = new Capsule;
+
+$capsule->addConnection([
+    'driver'    => $_ENV['DB_CONNECTION'],
+    'host'      => $_ENV['DB_HOST'],
+    'database'  => $_ENV['DB_DATABASE'],
+    'username'  => $_ENV['DB_USERNAME'],
+    'password'  => $_ENV['DB_PASSWORD'],
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => '',
+]);
+
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
+
 
 function view($view, $data = [])
 {
@@ -174,11 +197,16 @@ use Illuminate\Events\Dispatcher;
 use Illuminate\Routing\Router;
 use Illuminate\Http\Request;
 
+// Create an event dispatcher
 $events = new Dispatcher;
+
+// Instantiate the router
 $router = new Router($events);
 
+// Load your routes
 require_once __DIR__ . '/../routes/web.php';
 
+// Handle the request
 $request = Request::capture();
 $response = $router->dispatch($request);
 $response->send();
