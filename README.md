@@ -72,7 +72,7 @@ Accédez à [http://localhost:8000](http://localhost:8000).
 |-- routes/
 |   |-- web.php
 |-- views/
-|   |-- home.twig
+|   |-- home.php
 |-- composer.json
 |-- bootstrap.php
 ```
@@ -81,7 +81,7 @@ Accédez à [http://localhost:8000](http://localhost:8000).
 - `app/Models/`: Contient les modèles
 - `public/`: Fichiers publics et point d'entrée du projet
 - `routes/web.php`: Déclaration des routes
-- `views/`: Modèles Twig pour l'affichage
+- `views/`: Modèles PHP pour l'affichage
 
 ---
 
@@ -101,8 +101,24 @@ class HomeController extends Controller
     {
         $model = new ExampleModel();
         $data = $model->getData();
-        echo "Données : " . json_encode($data);
+
+        // Inclusion de la vue
+        return view('home', ['data' => $data]);
     }
+}
+```
+
+## Fonction Utilitaire `view()`
+Ajoutez cette fonction dans `bootstrap.php` :
+
+```php
+<?php
+require_once __DIR__ . '/vendor/autoload.php';
+
+function view($view, $data = [])
+{
+    extract($data);
+    require __DIR__ . "/views/{$view}.php";
 }
 ```
 
@@ -120,6 +136,23 @@ class ExampleModel
         return ["message" => "Bienvenue dans notre modèle simple !"];
     }
 }
+```
+
+## Exemple de Vue
+Voici un exemple de modèle PHP `home.php` :
+
+```php
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'accueil</title>
+</head>
+<body>
+    <h1><?php echo htmlspecialchars(\$data['message']); ?></h1>
+</body>
+</html>
 ```
 
 ## Exemple de Route
@@ -153,4 +186,4 @@ $response->send();
 ```
 
 ## Conclusion
-Avec cette base, vos apprenants peuvent étendre leur projet en ajoutant des routes, contrôleurs, modèles et vues dynamiques. Si vous avez besoin d'autres fonctionnalités, faites-le-moi savoir !
+Avec cette base, vos apprenants peuvent étendre leur projet en ajoutant des routes, contrôleurs, modèles et vues dynamiques en PHP. Si vous avez besoin d'autres fonctionnalités, faites-le-moi savoir !
