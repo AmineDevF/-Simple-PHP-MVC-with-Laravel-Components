@@ -1,4 +1,4 @@
-# Simple PHP MVC with Laravel Components
+# Simple PHP MVC avec Laravel Components
 
 ## Prérequis
 Assurez-vous d'avoir installé les éléments suivants :
@@ -92,10 +92,9 @@ Voici un exemple de `HomeController.php` :
 <?php
 namespace App\Controllers;
 
-use Illuminate\Routing\Controller;
 use App\Models\ExampleModel;
 
-class HomeController extends Controller
+class HomeController
 {
     public function index()
     {
@@ -143,14 +142,14 @@ Voici un exemple de modèle PHP `home.php` :
 
 ```php
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page d'accueil</title>
 </head>
 <body>
-    <h1><?php echo htmlspecialchars(\$data['message']); ?></h1>
+    <h1><?php echo htmlspecialchars($data['message']); ?></h1>
 </body>
 </html>
 ```
